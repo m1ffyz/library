@@ -1,5 +1,5 @@
 // 重み付きグラフ, 開始地点
-vector<long long> dijkstra(vector<vector<pair<int, long long>>> G, int s){
+vector<long long> dijkstra(vector<vector<pair<int, long long>>> &G, int s){
     int N = G.size();
     vector<long long> dist(N, 1e18);
     vector<bool> decided(N, false);
