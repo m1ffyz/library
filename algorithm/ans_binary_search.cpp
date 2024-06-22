@@ -3,7 +3,7 @@ bool ans_check(long long x){
 }
 
 long long ans_binary_search(){
-    long long left = -1, right = LONG_LONG_MAX - 1;
+    long long left = -1, right = 1e18;
     if(ans_check(right)){
         while(right - left > 1){
             long long mid = (left + right) / 2;
