@@ -33,7 +33,7 @@ struct Dijkstra{
     }
 
     // 点 x から dijkstra を走らせる
-    void run(int x){
+    void run(int x = 0){
         s = x;
         vector<bool> decided(N, false);
         priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> Q;
