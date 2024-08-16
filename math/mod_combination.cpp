@@ -8,6 +8,7 @@ vector<mint> fac, fac_inv, inv;
 // 前処理 O(comb_max)
 // comb_max : n の最大値
 void comb_process(int comb_max){
+    comb_max += 1;
     fac.resize(comb_max);
     fac_inv.resize(comb_max);
     inv.resize(comb_max);
