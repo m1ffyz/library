@@ -3,7 +3,7 @@ struct Doubling{
     vector<int> next;
     vector<vector<int>> dp;
 
-    // dp[i][j] := jから2^i回移動した先の頂点
+    // dp[i][j] := j から 2^i 回移動した先の頂点
     // O(N log(k)) (k = 64)
     Doubling(vector<int> next_){
         N = next_.size();
