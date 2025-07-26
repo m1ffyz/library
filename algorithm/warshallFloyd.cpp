@@ -28,7 +28,7 @@ struct WarshallFloyd{
         for(int i = 0; i < N; i ++){
             dist[i][i] = 0;
             for(auto [to, cost] : G[i]){
-                dist[i][to] = cost;
+                dist[i][to] = min(dist[i][to], cost);
             }
         }
         for(int k = 0; k < N; k ++){
@@ -36,6 +36,20 @@ struct WarshallFloyd{
                 for(int j = 0; j < N; j ++){
                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
+            }
+        }
+    }
+
+    void add_later(int x, int y, long long cost){
+        G[x].push_back({y, cost});
+        G[y].push_back({x, cost});
+        dist[x][y] = min(dist[x][y], cost);
+        dist[y][x] = min(dist[y][x], cost);
+
+        for(int i = 0; i < N; i ++){
+            for(int j = 0; j < N; j ++){
+                dist[i][j] = min(dist[i][j], dist[i][x] + dist[x][y] + dist[y][j]);
+                dist[i][j] = min(dist[i][j], dist[i][y] + dist[y][x] + dist[x][j]);
             }
         }
     }
