@@ -107,8 +107,6 @@ private:
     }
 };
 
-vector<map<int, int>> G;
-
 struct S {
     int val;
 };
