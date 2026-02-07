@@ -6,45 +6,9 @@
  * @see https://github.com/m1ffyz/library/blob/main/math/geometry_2d.hpp
  */
 
-#include <quadmath.h>
-using Real = __float128;
+using Real = long double;
 const Real EPS = 1e-15;
-const Real PI = acosq(-1.0Q);
-
-Real sqrt(Real x) {
-    return sqrtq(x);
-}
-
-Real abs(Real x) {
-    return fabsq(x);
-}
-
-Real acos(Real x) {
-    return acosq(x);
-}
-
-Real atan2(Real y, Real x) {
-    return atan2q(y, x);
-}
-
-Real cos(Real x) {
-    return cosq(x);
-}
-
-Real sin(Real x) {
-    return sinq(x);
-}
-
-istream& operator>>(istream& is, Real& r) {
-    long double d;
-    is >> d;
-    r = d;
-    return is;
-}
-
-ostream& operator<<(ostream& os, const Real& r) {
-    return os << (long double) r;
-}
+const Real PI = acos(-1.0L);
 
 // 誤差判定用
 int sgn(Real a) {
@@ -208,7 +172,7 @@ point project(line l, point p) {
 
 // 直線を軸とした線対称な点
 point reflect(line l, point p) {
-    return p + (project(l, p) - p) * 2.0; 
+    return p + (project(l, p) - p) * 2.0;
 }
 
 Real dist_lp(line l, point p) {
@@ -317,7 +281,7 @@ vector<point> intersect_cl(circle c, line l) {
         return {h};
     }
 
-    Real len = sqrt(max(0.0Q, c.r * c.r - d * d));
+    Real len = sqrt(max(0.0L, c.r * c.r - d * d));
     point dir = l.vec() / l.vec().abs();
     return {h - dir * len, h + dir * len};
 }
@@ -329,11 +293,11 @@ vector<point> intersect_cc(circle c1, circle c2) {
     }
 
     Real cos_val = (c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d);
-    if (cos_val < -1.0Q) {
-        cos_val = -1.0Q;
+    if (cos_val < -1.0L) {
+        cos_val = -1.0L;
     }
-    if (cos_val > 1.0Q) {
-        cos_val = 1.0Q;
+    if (cos_val > 1.0L) {
+        cos_val = 1.0L;
     }
     Real a = acos(cos_val);
 
