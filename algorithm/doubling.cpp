@@ -1,38 +1,64 @@
-struct Doubling{
+/* @file doubling.hpp
+ * @brief ダブリング
+ * @author m1ffyz
+ * @date 2026-02-15
+ * @see https://github.com/m1ffyz/library/blob/main/algorithm/doubling.hpp
+ */
+
+template <class S, S (*op)(S, S), S (*e)()>
+struct doubling {
     int N;
-    vector<int> next;
-    vector<vector<int>> dp;
+    int LOG;
+    vector<vector<int>> next;
+    vector<vector<S>> val;
 
-    // dp[i][j] := j から 2^i 回移動した先の頂点
-    // O(N log(k)) (k = 64)
-    Doubling(vector<int> next_){
-        N = next_.size();
-        next = next_;
-        dp.assign(64, vector<int>(N, -1));
-        dp[0] = next;
-        for(int i = 1; i < 64; i ++){
-            for(int j = 0; j < N; j ++){
-                dp[i][j] = dp[i - 1][dp[i - 1][j]];
+    struct res{
+        int pos;
+        S val;
+    };
+    
+    doubling(int N, long long max_k) : N(N) {
+        LOG = 1;
+        while ((1LL << LOG) <= max_k) {
+            LOG ++;
+        }
+        next.assign(LOG, vector<int> (N, -1));
+        val.assign(LOG, vector<S> (N, e()));
+    }
+
+    void set_next(int v, int t, S x) {
+        next[0][v] = t;
+        val[0][v] = x;
+    }
+
+    void build() {
+        for (int i = 0; i < LOG - 1; i ++) {
+            for (int v = 0; v < N; v ++) {
+                if (next[i][v] == -1) {
+                    val[i + 1][v] = val[i][v];
+                    continue;
+                }
+
+                next[i + 1][v] = next[i][next[i][v]];
+                val[i + 1][v] = op(val[i][v], val[i][next[i][v]]);
             }
         }
     }
 
-    // p から k 回移動した先の頂点
-    int pos(int p, long long k){
-        for(int i = 0; i < 64; i ++){
-            if(k & (1LL << i)){
-                p = dp[i][p];
+    res query(int p, long long k) {
+        S ans = e();
+        int curr = p;
+        for (int i = 0; i < LOG; i ++) {
+            if ((k >> i) & 1) {
+                if (curr == -1) {
+                    break;
+                }
+
+                ans = op(ans, val[i][curr]);
+                curr = next[i][curr];
             }
         }
-        return p;
-    }
 
-    // すべての頂点について k 回移動した先の頂点
-    vector<int> all_pos(long long k){
-        vector<int> res(N);
-        for(int i = 0; i < N; i ++){
-            res[i] = pos(i, k);
-        }
-        return res;
+        return {curr, ans};
     }
 };
