@@ -1,3 +1,10 @@
+/* @file ans_binary_search.hpp
+ * @brief 答えで二分探索
+ * @author m1ffyz
+ * @date 2026-02-15
+ * @see https://github.com/m1ffyz/library/blob/main/algorithm/ans_binaary_search.hpp
+ */
+
 bool ans_check(long long x) {
 
 
