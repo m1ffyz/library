@@ -1,0 +1,88 @@
+/* @file dynamic_dsu.hpp
+ * @brief 動的 Union-Find
+ * @author m1ffyz
+ * @date 2026-02-16
+ * @see https://github.com/m1ffyz/library/blob/main/data_structure/dynamic_dsu.hpp
+ */
+
+template <class T = long long>
+struct dynamic_dsu {
+    map<T, int> id_map;
+    vector<T> coords;
+    vector<int> parent_or_size;
+
+    dynamic_dsu() = default;
+
+    // x の index を取得
+    // 存在しない場合は作成
+    int get(T x) {
+        auto it = id_map.find(x);
+        if (it != id_map.end()) {
+            return it->second;
+        }
+        
+        int id = coords.size();
+        id_map[x] = id;
+        coords.push_back(x);
+        parent_or_size.push_back(-1);
+        return id;
+    }
+
+    T merge(T u, T v) {
+        int x = leader_id(get(u));
+        int y = leader_id(get(v));
+        if (x == y) {
+            return coords[x];
+        }
+
+        if (-parent_or_size[x] < -parent_or_size[y]) {
+            swap(x, y);
+        }
+        parent_or_size[x] += parent_or_size[y];
+        parent_or_size[y] = x;
+        return coords[x];
+    }
+
+    bool same(T u, T v) {
+        return leader_id(get(u)) == leader_id(get(v));
+    }
+
+    T leader(T u) {
+        return coords[leader_id(get(u))];
+    }
+
+    int size(T u) {
+        return -parent_or_size[leader_id(get(u))];
+    }
+
+    vector<vector<T>> groups() {
+        int n = coords.size();
+        vector<int> leader_buf(n), group_size(n);
+        for (int i = 0; i < n; i ++) {
+            leader_buf[i] = leader_id(i);
+            group_size[leader_buf[i]] ++;
+        }
+        vector<vector<T>> result(n);
+        for (int i = 0; i < n; i ++) {
+            result[i].reserve(group_size[i]);
+        }
+        for (int i = 0; i < n; i ++) {
+            result[leader_buf[i]].push_back(coords[i]);
+        }
+
+        result.erase(remove_if(result.begin(), result.end(), [&](const vector<T> &v) {return v.empty();}), result.end());
+        return result;
+    }
+
+    int count_nodes() const {
+        return coords.size();
+    }
+
+private:
+    int leader_id(int a) {
+        if (parent_or_size[a] < 0) {
+            return a;
+        }
+        return parent_or_size[a] = leader_id(parent_or_size[a]);
+    }
+};
