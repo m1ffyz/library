@@ -8,6 +8,7 @@
 template <class T = long long>
 struct dynamic_dsu {
     map<T, int> id_map;
+    // unordered_map<T, int> id_map;
     vector<T> coords;
     vector<int> parent_or_size;
 
