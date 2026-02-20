@@ -5,13 +5,8 @@
  * @see https://github.com/m1ffyz/library/blob/main/algorithm/ans_binaary_search.hpp
  */
 
-bool ans_check(long long x) {
-
-
-    
-}
-
-long long ans_binary_search() {
+template <typename F>
+long long ans_binary_search(F ans_check) {
     long long left = -1, right = 1e18;
 
     long long ok, ng;
@@ -23,7 +18,7 @@ long long ans_binary_search() {
         ng = right;
     }
 
-    while (abs(ok - ng) > 1) {
+    while (std::abs(ok - ng) > 1) {
         long long mid = ok + (ng - ok) / 2;
 
         // デバッグ用
