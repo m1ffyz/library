@@ -43,83 +43,71 @@ struct rerooting {
     }
 
     void build() {
-        dfs_bottom_up(0, -1);
-        dfs_top_down(0, -1, e());
+        vector<int> parent(N, -1);
+        vector<int> order;
+        order.reserve(N);
+
+        vector<int> stack = {0};
+        while (!stack.empty()) {
+            int v = stack.back();
+            stack.pop_back();
+            order.push_back(v);
+
+            for (int i = (int) adj[v].size() - 1; i >= 0; i --) {
+                int u = adj[v][i];
+                if (u == parent[v]) continue;
+                parent[u] = v;
+                stack.push_back(u);
+            }
+        }
+
+        for (int i = N - 1; i >= 0; i --) {
+            int v = order[i];
+            S res = e();
+            for (int u : adj[v]) {
+                if (u == parent[v]) continue;
+                res = op(res, put(dp[u], u, v));
+            }
+            dp[v] = res;
+        }
+
+        vector<S> values_from_parent(N, e());
+        for (int v : order) {
+            vector<S> values;
+            if (parent[v] != -1) {
+                values.push_back(values_from_parent[v]);
+            }
+            for (int u : adj[v]) {
+                if (u == parent[v]) continue;
+                values.push_back(put(dp[u], u, v));
+            }
+
+            int deg = (int) values.size();
+            vector<S> left(deg + 1, e()), right(deg + 1, e());
+            for (int i = 0; i < deg; i ++) {
+                left[i + 1] = op(left[i], values[i]);
+            }
+            for (int i = deg - 1; i >= 0; i --) {
+                right[i] = op(values[i], right[i + 1]);
+            }
+
+            ans[v] = put(left[deg], v, -1);
+
+            int idx = 0;
+            int child_idx_offset = (parent[v] != -1) ? 1 : 0;
+            for (int u : adj[v]) {
+                if (u == parent[v]) continue;
+
+                int current_vec_idx = idx + child_idx_offset;
+                S val_for_child = op(left[current_vec_idx], right[current_vec_idx + 1]);
+                values_from_parent[u] = put(val_for_child, v, u);
+                idx ++;
+            }
+        }
     }
 
     S query(int v){
         return ans[v];
     }
 
-private:
-    void dfs_bottom_up(int v, int p) {
-        S res = e();
-        for (int u : adj[v]){
-            if (u == p) continue;
-            dfs_bottom_up(u, v);
-            // u から v へ値を渡す
-            res = op(res, put(dp[u], u, v));
-        }
-        dp[v] = res;
-    }
-
-    void dfs_top_down(int v, int p, S val_p) {
-        vector<S> children_values;
-        if (p != -1) {
-            children_values.push_back(val_p);
-        }
-        for (int u : adj[v]) {
-            if (u == p) continue;
-            // u から v へ渡される値を集める
-            children_values.push_back(put(dp[u], u, v));
-        }
-
-        S total_res = e();
-        for (const auto &val : children_values) {
-            total_res = op(total_res, val);
-        }
-        // 最終結果: v から -1 (どこにも行かない)
-        ans[v] = put(total_res, v, -1);
-
-        int deg = children_values.size();
-        vector<S> left(deg + 1, e()), right(deg + 1, e());
-        
-        for (int i = 0; i < deg; i ++) {
-            left[i + 1] = op(left[i], children_values[i]);
-        }
-        for (int i = deg - 1; i >= 0; i --) {
-            right[i] = op(children_values[i], right[i + 1]);
-        }
-
-        int idx = 0;
-        int child_idx_offset = (p != -1) ? 1 : 0;
-
-        for (int u: adj[v]) {
-            if(u == p) continue;
-
-            int current_vec_idx = idx + child_idx_offset;
-            S val_for_child = op(left[current_vec_idx], right[current_vec_idx + 1]);
-            
-            // v から u へ値を渡す
-            dfs_top_down(u, v, put(val_for_child, v, u));
-            idx ++;
-        }
-    }
 };
-
-struct S {
-    int val;
-};
-
-
-S op(S a, S b) {
-    
-}
-
-S e() {
-    
-}
-
-S put(S val, int v, int p) {
-    
-}

@@ -35,6 +35,8 @@ struct Dijkstra{
     // 点 x から dijkstra を走らせる
     void run(int x = 0){
         s = x;
+        d.assign(N, 1e18);
+        prev.assign(N, -1);
         vector<bool> decided(N, false);
         priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> Q;
         d[x] = 0;

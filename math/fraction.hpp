@@ -43,7 +43,7 @@ struct frac {
             return;
         }
 
-        if (den < 0) {
+        if (d < 0) {
             n = -n;
             d = -d;
         }

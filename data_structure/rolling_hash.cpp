@@ -208,7 +208,7 @@ public:
     }
 
     // [l1, r1), [l2, r2) における最長共通接頭辞長
-    int lcp(int l1, int r1, int l2, int r2){
+    int lcp(int l1, int r1, int l2, int r2) const {
         int len = min(r1 - l1, r2 - l2);
         int low = 0, high = len + 1;
         while(high - low > 1){
