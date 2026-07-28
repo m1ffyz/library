@@ -2,7 +2,7 @@
  * @file rerooting.hpp
  * @brief 全方位木DP
  * @author m1ffyz
- * @date 2026-02-02
+ * @date 2026-07-28
  * @see https://github.com/m1ffyz/library/blob/main/algorithm/rerooting.hpp
  */
 

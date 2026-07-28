@@ -2,7 +2,7 @@
  * @file fraction.hpp
  * @brief 分数の構造体
  * @author m1ffyz
- * @date 2026-02-03
+ * @date 2026-07-28
  * @see https://github.com/m1ffyz/library/blob/main/math/fraction.hpp
  */
 
