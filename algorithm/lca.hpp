@@ -185,7 +185,7 @@ struct LCA {
     }
 
     bool is_ancestor(int a, int b) const {
-        return tin[a] <= tin[b] && tout[b] <= tout[a];
+        return tin[a] <= tin[b] and tout[b] <= tout[a];
     }
 
     int parent(int v) const {

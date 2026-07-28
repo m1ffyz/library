@@ -22,7 +22,7 @@ struct LCS{
     string lcs(){
         string res = "";
         int i = N, j = M;
-        while(i > 0 && j > 0){
+        while(i > 0 and j > 0){
             if(S[i - 1] == T[j - 1]){
                 res += S[i - 1];
                 i--;

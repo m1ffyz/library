@@ -53,7 +53,7 @@ namespace number_theory {
                 if (a % n == 0) continue;
 
                 u64 x = power_mod(a % n, d, n);
-                if (x == 1 || x == n - 1) continue;
+                if (x == 1 or x == n - 1) continue;
 
                 bool is_composite = true;
                 for (int r = 1; r < s; r ++) {
@@ -167,7 +167,7 @@ namespace number_theory {
 
         vector<pair<long long, long long>> res;
         for (internal::u64 p : factors) {
-            if (res.empty() || res.back().first != (long long) p) {
+            if (res.empty() or res.back().first != (long long) p) {
                 res.push_back({(long long) p, 1});
             } else {
                 res.back().second ++;
@@ -301,14 +301,14 @@ namespace number_theory {
         vector<long long> primes;
 
         SegmentedEratosthenes(long long min_n, long long max_n) : MIN_N(min_n), MAX_N(max_n) {
-            assert(0 <= MIN_N && MIN_N <= MAX_N);
+            assert(0 <= MIN_N and MIN_N <= MAX_N);
             is_prime.assign((size_t) (MAX_N - MIN_N) + 1, true);
 
             long long limit = (long long) sqrtl((long double) MAX_N);
             while (limit + 1 <= MAX_N / (limit + 1)) {
                 limit ++;
             }
-            while (limit > 0 && limit > MAX_N / limit) {
+            while (limit > 0 and limit > MAX_N / limit) {
                 limit --;
             }
 
@@ -326,7 +326,7 @@ namespace number_theory {
             if (MIN_N == 0) {
                 is_prime[0] = false;
             }
-            if (MIN_N <= 1 && 1 <= MAX_N) {
+            if (MIN_N <= 1 and 1 <= MAX_N) {
                 is_prime[1 - MIN_N] = false;
             }
 
@@ -355,7 +355,7 @@ namespace number_theory {
         }
 
         bool get_is_prime(long long x) {
-            assert(MIN_N <= x && x <= MAX_N);
+            assert(MIN_N <= x and x <= MAX_N);
             return is_prime[x - MIN_N];
         }
     };
